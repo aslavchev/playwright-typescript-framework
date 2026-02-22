@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "lib": ["ES2022"],
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ui/pages/*":     ["src/ui/pages/*"],
+      "@ui/fixtures/*":  ["src/ui/fixtures/*"],
+      "@ui/data/*":      ["src/ui/data/*"],
+      "@api/clients/*":  ["src/api/clients/*"],
+      "@api/fixtures/*": ["src/api/fixtures/*"],
+      "@api/data/*":     ["src/api/data/*"]
+    }
+  },
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules"]
+}
