@@ -14,6 +14,7 @@ export default defineConfig({
 
   use: {
     baseURL: 'https://www.saucedemo.com', // UI tests can use page.goto('/')
+    testIdAttribute: 'data-test',         // SauceDemo uses data-test, not data-testid
     screenshot: 'only-on-failure',        // automatic — no ScreenshotUtils class needed
     trace: 'on-first-retry',              // records network + DOM on retry (flight recorder)
     video: 'off',                         // traces are enough, video saves CI time
