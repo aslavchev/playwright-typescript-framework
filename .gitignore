@@ -11,3 +11,9 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 .idea/
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
