@@ -6,7 +6,7 @@ Playwright + TypeScript test framework covering two targets:
 
 | Target | Tests | Tech |
 |---|---|---|
-| [SauceDemo](https://www.saucedemo.com) | 6 UI tests | Page Objects, auto-wait, no explicit waits |
+| [SauceDemo](https://www.saucedemo.com) | 8 UI tests | Page Objects, auto-wait, no explicit waits |
 | [DummyJSON](https://dummyjson.com) | 10 API tests | `request` context, schema validation |
 
 ## Why Playwright
