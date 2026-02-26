@@ -8,7 +8,7 @@ test.describe('Cart', () => {
             await cartPage.goto();
         });
 
-        test('cart is empty by default @smoke @ui', async ({ cartPage }) => {
+        test('[TC-CART-001] cart is empty by default @smoke @ui', async ({ cartPage }) => {
             // Act
             const cartItemCount = await cartPage.getCartItemCount();
 
@@ -24,7 +24,7 @@ test.describe('Cart', () => {
             await cartPage.goto();
         });
 
-        test('added product appears in cart @smoke @ui', async ({ cartPage }) => {
+        test('[TC-CART-002] added product appears in cart @smoke @ui', async ({ cartPage }) => {
             // Act
             const cartItemCount = await cartPage.getCartItemCount();
 
@@ -32,7 +32,7 @@ test.describe('Cart', () => {
             expect(cartItemCount).toBe(1);
         });
 
-        test('remove item from cart decrements count @regression @ui', async ({ cartPage }) => {
+        test('[TC-CART-003] remove item from cart decrements count @regression @ui', async ({ cartPage }) => {
             // Arrange
             expect(await cartPage.getCartItemCount()).toBe(1); // precondition
 
@@ -44,7 +44,7 @@ test.describe('Cart', () => {
             expect(updatedItemCount).toBe(0);
         });
 
-        test('navigate to checkout page @smoke @ui', async ({ cartPage, page }) => {
+        test('[TC-CART-004] navigate to checkout page @smoke @ui', async ({ cartPage, page }) => {
             // Act
             await cartPage.proceedToCheckout();
 

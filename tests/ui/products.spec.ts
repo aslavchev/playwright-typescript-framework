@@ -8,7 +8,7 @@ test.describe('Products', () => {
         await productsPage.goto();
     });
 
-    test('products page loads with 6 items @smoke @ui', async ({ productsPage }) => {
+    test('[TC-PRODUCTS-001] products page loads with 6 items @smoke @ui', async ({ productsPage }) => {
         // Act
         const names = await productsPage.getProductNames();
 
@@ -16,7 +16,7 @@ test.describe('Products', () => {
         expect(names).toHaveLength(6);
     });
 
-    test('products are sorted A to Z by default @smoke @ui', async ({ productsPage }) => {
+    test('[TC-PRODUCTS-002] products are sorted A to Z by default @smoke @ui', async ({ productsPage }) => {
         // Act
         const names = await productsPage.getProductNames();
 
@@ -25,7 +25,7 @@ test.describe('Products', () => {
         expect(names[names.length - 1]).toBe(Products.TSHIRT_RED);
     });
 
-    test('sort by price low to high reorders products @regression @ui', async ({ productsPage }) => {
+    test('[TC-PRODUCTS-003] sort by price low to high reorders products @regression @ui', async ({ productsPage }) => {
         // Act
         await productsPage.sortBy(SortOptions.PRICE_ASC);
 
@@ -33,7 +33,7 @@ test.describe('Products', () => {
         await expect(productsPage.getFirstProductNameLocator()).toHaveText(Products.ONESIE);
     });
 
-    test('add product to cart increments badge to 1 @regression @ui', async ({ productsPage }) => {
+    test('[TC-PRODUCTS-004] add product to cart increments badge to 1 @regression @ui', async ({ productsPage }) => {
         // Act
         await productsPage.addToCart(Products.BACKPACK);
 
@@ -41,7 +41,7 @@ test.describe('Products', () => {
         await expect(productsPage.getCartBadge()).toHaveText('1');
     });
 
-    test('remove product from cart clears badge @regression @ui', async ({ productsPage }) => {
+    test('[TC-PRODUCTS-005] remove product from cart clears badge @regression @ui', async ({ productsPage }) => {
         // Arrange
         await productsPage.addToCart(Products.BACKPACK);
         await expect(productsPage.getCartBadge()).toBeVisible(); // precondition

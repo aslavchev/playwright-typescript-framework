@@ -12,7 +12,7 @@ test.describe('Checkout', () => {
 
     test.describe('Step 1 - Customer Checkout Info', () => {
 
-        test('valid customer info navigates to checkout overview @smoke @ui', async ({ checkoutInfoPage, page }) => {
+        test('[TC-CHECKOUT-001] valid customer info navigates to checkout overview @smoke @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
@@ -21,7 +21,7 @@ test.describe('Checkout', () => {
             await expect(page).toHaveURL(/checkout-step-two/);
         });
 
-        test('missing first name shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
+        test('[TC-CHECKOUT-002] missing first name shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo('', Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
@@ -31,7 +31,7 @@ test.describe('Checkout', () => {
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('First Name is required');
         });
 
-        test('missing last name shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
+        test('[TC-CHECKOUT-003] missing last name shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, '', Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
@@ -41,7 +41,7 @@ test.describe('Checkout', () => {
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('Last Name is required');
         });
 
-        test('missing postal code shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
+        test('[TC-CHECKOUT-004] missing postal code shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, '');
             await checkoutInfoPage.continueToOverview();
@@ -59,7 +59,7 @@ test.describe('Checkout', () => {
             await expect(checkoutOverviewPage.getFinishButton()).toBeVisible();
         });
 
-        test('finish checkout navigates to confirmation @smoke @ui', async ({ checkoutOverviewPage, checkoutCompletePage }) => {
+        test('[TC-CHECKOUT-005] finish checkout navigates to confirmation @smoke @ui', async ({ checkoutOverviewPage, checkoutCompletePage }) => {
             // Act
             await checkoutOverviewPage.finishCheckout();
 
@@ -76,7 +76,7 @@ test.describe('Checkout', () => {
             await expect(page).toHaveURL(/checkout-complete/);
         });
 
-        test('back home returns to products with empty cart @smoke @e2e @ui', async ({ checkoutCompletePage, productsPage, page }) => {
+        test('[TC-CHECKOUT-006] back home returns to products with empty cart @smoke @e2e @ui', async ({ checkoutCompletePage, productsPage, page }) => {
             // Arrange
             await expect(checkoutCompletePage.getCompleteText()).toContainText('Your order has been dispatched');
 
