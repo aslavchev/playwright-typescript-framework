@@ -38,7 +38,7 @@ test.describe('Products', () => {
         await productsPage.addToCart(Products.BACKPACK);
 
         // Assert
-        expect(await productsPage.getCartBadgeCount()).toBe(1);
+        await expect(productsPage.getCartBadge()).toHaveText('1');
     });
 
     test('remove product from cart clears badge @regression @ui', async ({ productsPage }) => {

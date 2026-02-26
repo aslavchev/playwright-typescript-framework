@@ -34,14 +34,6 @@ export class ProductsPage {
         return this.cartBadge;
     }
 
-    /** Return the cart badge count, or 0 if the badge is not visible */
-    async getCartBadgeCount(): Promise<number> {
-        if (await this.cartBadge.isVisible()) {
-            return parseInt(await this.cartBadge.textContent() ?? '0', 10);
-        }
-        return 0;
-    }
-
     /** Return the visible names of all products on the page. */
     async getProductNames(): Promise<string[]> {
         return this.productItemName.allTextContents();
