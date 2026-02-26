@@ -1,13 +1,14 @@
 # playwright-typescript-framework
 
 [![Playwright Tests](https://github.com/aslavchev/playwright-typescript-framework/actions/workflows/tests.yml/badge.svg)](https://github.com/aslavchev/playwright-typescript-framework/actions/workflows/tests.yml)
+[![HTML Report](https://img.shields.io/badge/report-github--pages-blue)](https://aslavchev.github.io/playwright-typescript-framework/)
 
 Playwright + TypeScript test framework covering two targets:
 
 | Target | Tests | Tech |
-|---|---|---|
-| [SauceDemo](https://www.saucedemo.com) | 8 UI tests | Page Objects, auto-wait, no explicit waits |
-| [DummyJSON](https://dummyjson.com) | 10 API tests | `request` context, schema validation |
+| --- | --- | --- |
+| [SauceDemo](https://www.saucedemo.com) | Login · Products · Cart · Checkout | Page Objects, storageState (bypass login per test), auto-wait |
+| [DummyJSON](https://dummyjson.com) | _(in progress)_ | `request` context, schema validation |
 
 ## Why Playwright
 
@@ -31,9 +32,11 @@ cp .env.example .env
 # fill in SAUCE_USERNAME, SAUCE_PASSWORD, DUMMYJSON_USERNAME, DUMMYJSON_PASSWORD
 ```
 
+UI tests require valid SauceDemo credentials. DummyJSON API tests use public endpoints.
+
 ## Structure
 
-```
+```text
 src/
   ui/pages/        # Page Objects (LoginPage, ProductsPage, CartPage, CheckoutPage)
   ui/fixtures/     # test.extend() — injects page objects as typed parameters
