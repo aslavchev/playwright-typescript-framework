@@ -1,5 +1,7 @@
 import { test, expect } from '../../src/ui/fixtures';
 import { Users } from '../../src/ui/data/users';
+import { Products } from '../../src/ui/data/products';
+import { SortOptions } from '../../src/ui/data/sortOptions';
 
 test.describe('Products', () => {
 
@@ -21,21 +23,21 @@ test.describe('Products', () => {
         const names = await productsPage.getProductNames();
 
         // Assert
-        expect(names[0]).toBe('Sauce Labs Backpack');
-        expect(names[names.length - 1]).toBe('Test.allTheThings() T-Shirt (Red)');
+        expect(names[0]).toBe(Products.BACKPACK);
+        expect(names[names.length - 1]).toBe(Products.TSHIRT_RED);
     });
 
     test('sort by price low to high reorders products @regression @ui', async ({ productsPage }) => {
         // Act
-        await productsPage.sortBy('Price (low to high)');
+        await productsPage.sortBy(SortOptions.PRICE_ASC);
 
         // Assert
-        await expect(productsPage.getFirstProductNameLocator()).toHaveText('Sauce Labs Onesie');
+        await expect(productsPage.getFirstProductNameLocator()).toHaveText(Products.ONESIE);
     });
 
     test('add product to cart increments badge to 1 @regression @ui', async ({ productsPage }) => {
         // Act
-        await productsPage.addToCart('Sauce Labs Backpack');
+        await productsPage.addToCart(Products.BACKPACK);
 
         // Assert
         expect(await productsPage.getCartBadgeCount()).toBe(1);
@@ -43,13 +45,13 @@ test.describe('Products', () => {
 
     test('remove product from cart clears badge @regression @ui', async ({ productsPage }) => {
         // Arrange
-        await productsPage.addToCart('Sauce Labs Backpack');
-        expect(await productsPage.getCartBadgeCount()).toBe(1); // precondition
+        await productsPage.addToCart(Products.BACKPACK);
+        await expect(productsPage.getCartBadge()).toBeVisible(); // precondition
 
         // Act
-        await productsPage.removeFromCart('Sauce Labs Backpack');
+        await productsPage.removeFromCart(Products.BACKPACK);
 
         // Assert
-        expect(await productsPage.getCartBadgeCount()).toBe(0);
+        await expect(productsPage.getCartBadge()).not.toBeVisible();
     });
 });

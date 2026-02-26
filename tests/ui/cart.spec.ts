@@ -1,5 +1,6 @@
 import { test, expect } from '../../src/ui/fixtures';
 import { Users } from '../../src/ui/data/users';
+import { Products } from '../../src/ui/data/products';
 
 test.describe('Cart', () => {
 
@@ -23,7 +24,7 @@ test.describe('Cart', () => {
         test.beforeEach(async ({ loginPage, productsPage, cartPage }) => {
             await loginPage.goto();
             await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-            await productsPage.addToCart('Sauce Labs Backpack');
+            await productsPage.addToCart(Products.BACKPACK);
             await cartPage.goto();
         });
 
@@ -40,7 +41,7 @@ test.describe('Cart', () => {
             expect(await cartPage.getCartItemCount()).toBe(1); // precondition
 
             // Act
-            await cartPage.removeItem('Sauce Labs Backpack');
+            await cartPage.removeItem(Products.BACKPACK);
 
             // Assert
             const updatedItemCount = await cartPage.getCartItemCount();

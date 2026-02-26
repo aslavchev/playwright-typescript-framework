@@ -1,12 +1,13 @@
 import { test, expect } from '../../src/ui/fixtures';
 import { Users } from '../../src/ui/data/users';
 import { Customers } from '../../src/ui/data/customers';
+import { Products } from '../../src/ui/data/products';
 
 test.describe('Checkout', () => {
     test.beforeEach(async ({ loginPage, productsPage, cartPage }) => {
         await loginPage.goto();
         await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-        await productsPage.addToCart('Sauce Labs Backpack');
+        await productsPage.addToCart(Products.BACKPACK);
         await cartPage.goto();
         await cartPage.proceedToCheckout();
     });
@@ -22,30 +23,33 @@ test.describe('Checkout', () => {
             await expect(page).toHaveURL(/checkout-step-two/);
         });
 
-        test('missing first name shows error @regression @ui', async ({ checkoutInfoPage }) => {
+        test('missing first name shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo('', Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
 
             // Assert
+            await expect(page).toHaveURL(/checkout-step-one/);
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('First Name is required');
         });
 
-        test('missing last name shows error @regression @ui', async ({ checkoutInfoPage }) => {
+        test('missing last name shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, '', Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
 
             // Assert
+            await expect(page).toHaveURL(/checkout-step-one/);
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('Last Name is required');
         });
 
-        test('missing postal code shows error @regression @ui', async ({ checkoutInfoPage }) => {
+        test('missing postal code shows error @regression @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, '');
             await checkoutInfoPage.continueToOverview();
 
             // Assert
+            await expect(page).toHaveURL(/checkout-step-one/);
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('Postal Code is required');
         });
     });
