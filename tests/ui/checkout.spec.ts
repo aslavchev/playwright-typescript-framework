@@ -1,19 +1,21 @@
 import { test, expect } from '../../src/ui/fixtures';
 import { Users } from '../../src/ui/data/users';
+import { Customers } from '../../src/ui/data/customers';
 
 test.describe('Checkout', () => {
+    test.beforeEach(async ({ loginPage, productsPage, cartPage }) => {
+        await loginPage.goto();
+        await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
+        await productsPage.addToCart('Sauce Labs Backpack');
+        await cartPage.goto();
+        await cartPage.proceedToCheckout();
+    });
+
     test.describe('Step 1 - Customer Checkout Info', () => {
-        test.beforeEach(async ({ loginPage, cartPage, productsPage }) => {
-            await loginPage.goto();
-            await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-            await productsPage.addToCart('Sauce Labs Backpack');
-            await cartPage.goto();
-            await cartPage.proceedToCheckout();
-        });
 
         test('valid customer info navigates to checkout overview @smoke @ui', async ({ checkoutInfoPage, page }) => {
             // Act
-            await checkoutInfoPage.fillCustomerInfo('ale', 'sl', '1000');
+            await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
 
             // Assert
@@ -22,7 +24,7 @@ test.describe('Checkout', () => {
 
         test('missing first name shows error @regression @ui', async ({ checkoutInfoPage }) => {
             // Act
-            await checkoutInfoPage.fillCustomerInfo('', 'sl', '1000');
+            await checkoutInfoPage.fillCustomerInfo('', Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
 
             // Assert
@@ -31,7 +33,7 @@ test.describe('Checkout', () => {
 
         test('missing last name shows error @regression @ui', async ({ checkoutInfoPage }) => {
             // Act
-            await checkoutInfoPage.fillCustomerInfo('al', '', '1000');
+            await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, '', Customers.STANDARD.postalCode);
             await checkoutInfoPage.continueToOverview();
 
             // Assert
@@ -40,11 +42,48 @@ test.describe('Checkout', () => {
 
         test('missing postal code shows error @regression @ui', async ({ checkoutInfoPage }) => {
             // Act
-            await checkoutInfoPage.fillCustomerInfo('al', 'sl', '');
+            await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, '');
             await checkoutInfoPage.continueToOverview();
 
             // Assert
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('Postal Code is required');
+        });
+    });
+
+    test.describe('Step 2 - Checkout Overview', () => {
+        test.beforeEach(async ({ checkoutInfoPage, checkoutOverviewPage }) => {
+            await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
+            await checkoutInfoPage.continueToOverview();
+            await expect(checkoutOverviewPage.getFinishButton()).toBeVisible();
+        });
+
+        test('finish checkout navigates to confirmation @smoke @ui', async ({ checkoutOverviewPage, checkoutCompletePage }) => {
+            // Act
+            await checkoutOverviewPage.finishCheckout();
+
+            // Assert
+            await expect(checkoutCompletePage.getHeader()).toContainText('Thank you for your order!');
+        });
+    });
+
+    test.describe('Step 3 - Checkout Complete', () => {
+        test.beforeEach(async ({ page, checkoutInfoPage, checkoutOverviewPage }) => {
+            await checkoutInfoPage.fillCustomerInfo(Customers.STANDARD.firstName, Customers.STANDARD.lastName, Customers.STANDARD.postalCode);
+            await checkoutInfoPage.continueToOverview();
+            await checkoutOverviewPage.finishCheckout();
+            await expect(page).toHaveURL(/checkout-complete/);
+        });
+
+        test('back home returns to products with empty cart @smoke @e2e @ui', async ({ checkoutCompletePage, productsPage, page }) => {
+            // Arrange
+            await expect(checkoutCompletePage.getCompleteText()).toContainText('Your order has been dispatched');
+
+            // Act
+            await checkoutCompletePage.backToHome();
+
+            // Assert
+            await expect(page).toHaveURL(/inventory/);
+            await expect(productsPage.getCartBadge()).not.toBeVisible();
         });
     });
 });

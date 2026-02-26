@@ -24,6 +24,11 @@ export class ProductsPage {
             .click();
     }
 
+    /** Returns the cart badge locator for explicit visibility assertions. */
+    getCartBadge(): Locator {
+        return this.cartBadge;
+    }
+
     /** Return the cart badge count, or 0 if the badge is not visible */
     async getCartBadgeCount(): Promise<number> {
         if (await this.cartBadge.isVisible()) {

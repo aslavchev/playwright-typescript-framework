@@ -3,6 +3,8 @@ import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { CartPage } from '../pages/CartPage';
 import { CheckoutInfoPage } from '../pages/CheckoutInfoPage';
+import { CheckoutOverviewPage } from '../pages/CheckoutOverviewPage';
+import { CheckoutCompletePage } from '../pages/CheckoutCompletePage';
 
 /** Defines the custom fixture types available to UI tests. */
 type UIFixtures = {
@@ -10,6 +12,8 @@ type UIFixtures = {
 	productsPage: ProductsPage;
 	cartPage: CartPage;
 	checkoutInfoPage: CheckoutInfoPage;
+	checkoutOverviewPage: CheckoutOverviewPage;
+	checkoutCompletePage: CheckoutCompletePage;
 };
 
 /**
@@ -28,6 +32,12 @@ export const test = base.extend<UIFixtures>({
 	},
 	checkoutInfoPage: async ({ page }, use) => {
 		await use(new CheckoutInfoPage(page));
+	},
+	checkoutOverviewPage: async ({ page }, use) => {
+		await use(new CheckoutOverviewPage(page));
+	},
+	checkoutCompletePage: async ({ page }, use) => {
+		await use(new CheckoutCompletePage(page));
 	}
 });
 
