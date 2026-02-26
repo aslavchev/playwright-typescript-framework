@@ -1,64 +1,58 @@
 import { test, expect } from '../../src/ui/fixtures';
 import { Users } from '../../src/ui/data/users';
 
-
 test.describe('Cart', () => {
-    test('cart is empty by default', async ({ loginPage, cartPage }) => {
-        // Arrange
-        await loginPage.goto();
-        await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-        await cartPage.goto();
 
-        // Act 
-        const cartItemCount = await cartPage.getCartItemCount();
+    test.describe('empty cart', () => {
+        test.beforeEach(async ({ loginPage, cartPage }) => {
+            await loginPage.goto();
+            await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
+            await cartPage.goto();
+        });
 
-        // Assert
-        expect(cartItemCount).toBe(0);
+        test('cart is empty by default @smoke @ui', async ({ cartPage }) => {
+            // Act
+            const cartItemCount = await cartPage.getCartItemCount();
+
+            // Assert
+            expect(cartItemCount).toBe(0);
+        });
     });
 
-    test('added product appears in cart', async ({ loginPage, productsPage, cartPage }) => {
-        // Arrange
-        await loginPage.goto();
-        await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-        await productsPage.addToCart('Sauce Labs Backpack');
-        await cartPage.goto();
+    test.describe('cart with items', () => {
+        test.beforeEach(async ({ loginPage, productsPage, cartPage }) => {
+            await loginPage.goto();
+            await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
+            await productsPage.addToCart('Sauce Labs Backpack');
+            await cartPage.goto();
+        });
 
-        // Act 
-        const cartItemCount = await cartPage.getCartItemCount();
+        test('added product appears in cart @smoke @ui', async ({ cartPage }) => {
+            // Act
+            const cartItemCount = await cartPage.getCartItemCount();
 
-        // Assert
-        expect(cartItemCount).toBe(1);
+            // Assert
+            expect(cartItemCount).toBe(1);
+        });
+
+        test('remove item from cart decrements count @regression @ui', async ({ cartPage }) => {
+            // Arrange
+            expect(await cartPage.getCartItemCount()).toBe(1); // precondition
+
+            // Act
+            await cartPage.removeItem('Sauce Labs Backpack');
+
+            // Assert
+            const updatedItemCount = await cartPage.getCartItemCount();
+            expect(updatedItemCount).toBe(0);
+        });
+
+        test('navigate to checkout page @smoke @ui', async ({ cartPage, page }) => {
+            // Act
+            await cartPage.proceedToCheckout();
+
+            // Assert
+            await expect(page).toHaveURL(/checkout-step-one/);
+        });
     });
-
-    test('remove item from cart decrements count', async ({ loginPage, productsPage, cartPage }) => {
-        // Arrange
-        await loginPage.goto();
-        await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-        await productsPage.addToCart('Sauce Labs Backpack');
-        await cartPage.goto();
-        const cartItemCount = await cartPage.getCartItemCount();
-        expect(cartItemCount).toBe(1); //precondition
-
-        // Act         
-        await cartPage.removeItem('Sauce Labs Backpack');
-        const updateItemCount = await cartPage.getCartItemCount();
-
-        // Assert
-        expect(updateItemCount).toBe(0);
-    });
-
-    test('navigate to checkout page', async ({ loginPage, productsPage, cartPage, page }) => {
-        // Arrange
-        await loginPage.goto();
-        await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
-        await productsPage.addToCart('Sauce Labs Backpack');
-        await cartPage.goto();
-
-        // Act         
-        await cartPage.proceedToCheckout();
-
-        // Assert
-        await expect(page).toHaveURL(/checkout-step-one/);
-    });
-
 });

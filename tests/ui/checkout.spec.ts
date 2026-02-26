@@ -11,7 +11,7 @@ test.describe('Checkout', () => {
             await cartPage.proceedToCheckout();
         });
 
-        test('valid customer info navigates to checkout overview', async ({ checkoutInfoPage, page }) => {
+        test('valid customer info navigates to checkout overview @smoke @ui', async ({ checkoutInfoPage, page }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo('ale', 'sl', '1000');
             await checkoutInfoPage.continueToOverview();
@@ -20,7 +20,7 @@ test.describe('Checkout', () => {
             await expect(page).toHaveURL(/checkout-step-two/);
         });
 
-        test('missing first name shows error', async ({ checkoutInfoPage }) => {
+        test('missing first name shows error @regression @ui', async ({ checkoutInfoPage }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo('', 'sl', '1000');
             await checkoutInfoPage.continueToOverview();
@@ -29,7 +29,7 @@ test.describe('Checkout', () => {
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('First Name is required');
         });
 
-        test('missing last name shows error', async ({ checkoutInfoPage }) => {
+        test('missing last name shows error @regression @ui', async ({ checkoutInfoPage }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo('al', '', '1000');
             await checkoutInfoPage.continueToOverview();
@@ -38,7 +38,7 @@ test.describe('Checkout', () => {
             await expect(checkoutInfoPage.getErrorMessage()).toContainText('Last Name is required');
         });
 
-        test('missing postal code shows error', async ({ checkoutInfoPage }) => {
+        test('missing postal code shows error @regression @ui', async ({ checkoutInfoPage }) => {
             // Act
             await checkoutInfoPage.fillCustomerInfo('al', 'sl', '');
             await checkoutInfoPage.continueToOverview();
