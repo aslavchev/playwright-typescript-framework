@@ -44,12 +44,12 @@ test.describe('Products', () => {
     test('[TC-PRODUCTS-005] remove product from cart clears badge @regression @ui', async ({ productsPage }) => {
         // Arrange
         await productsPage.addToCart(Products.BACKPACK);
-        await expect(productsPage.getCartBadge()).toBeVisible(); // precondition
+        await expect(productsPage.getCartBadge()).toHaveText('1'); // precondition
 
         // Act
         await productsPage.removeFromCart(Products.BACKPACK);
 
         // Assert
-        await expect(productsPage.getCartBadge()).not.toBeVisible();
+        await expect(productsPage.getCartBadge()).toBeHidden();
     });
 });

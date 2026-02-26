@@ -85,7 +85,7 @@ test.describe('Checkout', () => {
 
             // Assert
             await expect(page).toHaveURL(/inventory/);
-            await expect(productsPage.getCartBadge()).not.toBeVisible();
+            await expect(productsPage.getCartBadge()).toBeHidden();
         });
     });
 });
