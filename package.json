@@ -7,7 +7,8 @@
     "test:ui": "npx playwright test tests/ui/",
     "test:api": "npx playwright test tests/api/",
     "test:smoke": "npx playwright test --grep @smoke",
-    "report": "npx playwright show-report"
+    "report": "npx playwright show-report",
+    "lint": "eslint ."
   },
   "engines": {
     "node": ">=18"
@@ -15,7 +16,10 @@
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@types/node": "^25.3.0",
+    "@typescript-eslint/parser": "^8.56.1",
     "dotenv": "^16.4.0",
+    "eslint": "^10.0.2",
+    "eslint-plugin-playwright": "^2.7.1",
     "typescript": "^5.7.0"
   }
 }
