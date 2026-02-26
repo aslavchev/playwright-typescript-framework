@@ -2,12 +2,14 @@ import { test as base } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { CartPage } from '../pages/CartPage';
+import { CheckoutInfoPage } from '../pages/CheckoutInfoPage';
 
 /** Defines the custom fixture types available to UI tests. */
 type UIFixtures = {
 	loginPage: LoginPage;
 	productsPage: ProductsPage;
 	cartPage: CartPage;
+	checkoutInfoPage: CheckoutInfoPage;
 };
 
 /**
@@ -23,10 +25,10 @@ export const test = base.extend<UIFixtures>({
 	},
 	cartPage: async ({ page }, use) => {
 		await use(new CartPage(page));
+	},
+	checkoutInfoPage: async ({ page }, use) => {
+		await use(new CheckoutInfoPage(page));
 	}
 });
-
-
-
 
 export { expect } from '@playwright/test';
