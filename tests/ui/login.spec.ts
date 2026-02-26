@@ -3,6 +3,9 @@ import { Users } from '../../src/ui/data/users';
 
 test.describe('Login', () => {
 
+    // Login tests must not inherit the saved auth state — they test the login UI itself.
+    test.use({ storageState: { cookies: [], origins: [] } });
+
     test.beforeEach(async ({ loginPage }) => {
         await loginPage.goto();
     });

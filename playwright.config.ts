@@ -22,8 +22,16 @@ export default defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
+    {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }, // Chromium only — matches Selenium setup
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json', // reuse auth — login runs once in setup project
+      },
+      dependencies: ['setup'],
     },
   ],
 });

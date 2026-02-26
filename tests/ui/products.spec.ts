@@ -1,13 +1,11 @@
 import { test, expect } from '../../src/ui/fixtures';
-import { Users } from '../../src/ui/data/users';
 import { Products } from '../../src/ui/data/products';
 import { SortOptions } from '../../src/ui/data/sortOptions';
 
 test.describe('Products', () => {
 
-    test.beforeEach(async ({ loginPage }) => {
-        await loginPage.goto();
-        await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
+    test.beforeEach(async ({ productsPage }) => {
+        await productsPage.goto();
     });
 
     test('products page loads with 6 items @smoke @ui', async ({ productsPage }) => {

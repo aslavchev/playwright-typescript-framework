@@ -12,6 +12,11 @@ export class ProductsPage {
         this.productItemName = page.getByTestId('inventory-item-name');
     }
 
+    /** Navigates directly to the products (inventory) page. */
+    async goto(): Promise<void> {
+        await this.page.goto('/inventory.html');
+    }
+
     /**
      * Add a specific product to the cart by its visible name
      * @param productName The exact product name as displayed on the page.

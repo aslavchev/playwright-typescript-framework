@@ -1,13 +1,10 @@
 import { test, expect } from '../../src/ui/fixtures';
-import { Users } from '../../src/ui/data/users';
 import { Products } from '../../src/ui/data/products';
 
 test.describe('Cart', () => {
 
     test.describe('empty cart', () => {
-        test.beforeEach(async ({ loginPage, cartPage }) => {
-            await loginPage.goto();
-            await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
+        test.beforeEach(async ({ cartPage }) => {
             await cartPage.goto();
         });
 
@@ -21,9 +18,8 @@ test.describe('Cart', () => {
     });
 
     test.describe('cart with items', () => {
-        test.beforeEach(async ({ loginPage, productsPage, cartPage }) => {
-            await loginPage.goto();
-            await loginPage.login(Users.STANDARD.username, Users.STANDARD.password);
+        test.beforeEach(async ({ productsPage, cartPage }) => {
+            await productsPage.goto();
             await productsPage.addToCart(Products.BACKPACK);
             await cartPage.goto();
         });
