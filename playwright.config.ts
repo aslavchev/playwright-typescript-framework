@@ -27,11 +27,21 @@ export default defineConfig({
     },
     {
       name: 'chromium',
+      testDir: './tests/ui',
       use: {
         ...devices['Desktop Chrome'],
         storageState: 'playwright/.auth/user.json', // reuse auth — login runs once in setup project
       },
       dependencies: ['setup'],
     },
+    {
+      name: 'api',
+      testDir: './tests/api', // only run tests from this folder
+      use: {
+        baseURL: 'https://dummyjson.com', // request.get('/products') → hits dummyjson.com/products
+        extraHTTPHeaders: { 'Content-Type': 'application/json' }, // every request sends JSON header automatically
+      },
+    },
+
   ],
 });
