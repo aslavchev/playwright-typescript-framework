@@ -16,11 +16,18 @@ export const NewProduct = {
     category: 'test-automation',
 } as const;
 
-export const Pagination = {
-    DEFAULT_LIMIT: 30,
-    CUSTOM_LIMIT: 5,
-    CUSTOM_SKIP: 10,
+export const UpdateProduct = {
+    title: 'Updated Title',
 } as const;
 
-/** Known product ID in DummyJSON for GET/DELETE tests. */
-export const EXISTING_PRODUCT_ID = 1;
+export const MUTABLE_PRODUCT_ID = 1;
+
+export const Pagination = {
+    DEFAULT_LIMIT: 30,
+} as const;
+
+/** Known product ID in DummyJSON for read-only GET tests. */
+export const EXISTING_PRODUCT_ID = 18;
+
+/** Non-existent product ID for 404 tests. */
+export const INVALID_PRODUCT_ID = 99999;
