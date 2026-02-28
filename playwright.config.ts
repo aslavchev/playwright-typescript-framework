@@ -4,7 +4,6 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export default defineConfig({
-  testDir: './tests',            // scans tests/ui/ and tests/api/ recursively
   fullyParallel: false,          // tests within a file run sequentially (shared cart state)
   forbidOnly: !!process.env.CI,  // fail CI if test.only() is accidentally committed
   retries: process.env.CI ? 1 : 0,        // retry once in CI, never locally
@@ -13,8 +12,6 @@ export default defineConfig({
   reporter: 'html', // built-in HTML report with screenshots + traces embedded
 
   use: {
-    baseURL: 'https://www.saucedemo.com', // UI tests can use page.goto('/')
-    testIdAttribute: 'data-test',         // SauceDemo uses data-test, not data-testid
     screenshot: 'only-on-failure',        // automatic — no ScreenshotUtils class needed
     trace: 'on-first-retry',              // records network + DOM on retry (flight recorder)
     video: 'off',                         // traces are enough, video saves CI time
@@ -22,17 +19,20 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'setup',
+      name: 'browser-auth',
       testMatch: /.*\.setup\.ts/,
+      use: { baseURL: 'https://www.saucedemo.com' },
     },
     {
       name: 'chromium',
       testDir: './tests/ui',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user.json', // reuse auth — login runs once in setup project
+        baseURL: 'https://www.saucedemo.com', // UI tests hit SauceDemo
+        testIdAttribute: 'data-test',         // SauceDemo uses data-test, not data-testid
+        storageState: 'playwright/.auth/user.json', // reuse auth — login runs once in browser-auth
       },
-      dependencies: ['setup'],
+      dependencies: ['browser-auth'],
     },
     {
       name: 'api',
