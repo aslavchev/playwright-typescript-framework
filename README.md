@@ -8,7 +8,7 @@ Playwright + TypeScript test framework covering two targets:
 | Target | Tests | Tech |
 | --- | --- | --- |
 | [SauceDemo](https://www.saucedemo.com) | Login · Products · Cart · Checkout | Page Objects, storageState (bypass login per test), auto-wait |
-| [DummyJSON](https://dummyjson.com) | _(in progress)_ | `request` context, schema validation |
+| [DummyJSON](https://dummyjson.com) | Auth (login, me, refresh) · Products (CRUD, search, pagination) | `request` fixture, typed responses, data-driven |
 
 ## Why Playwright
 
@@ -27,12 +27,13 @@ npx playwright show-report     # open HTML report
 
 ## Setup
 
+No setup required — both targets use public demo credentials with hardcoded fallbacks.
+
+To override credentials (e.g. for CI), copy `.env.example` to `.env`:
+
 ```bash
 cp .env.example .env
-# fill in SAUCE_USERNAME, SAUCE_PASSWORD, DUMMYJSON_USERNAME, DUMMYJSON_PASSWORD
 ```
-
-UI tests require valid SauceDemo credentials. DummyJSON API tests use public endpoints.
 
 ## Structure
 
@@ -41,10 +42,10 @@ src/
   ui/pages/        # Page Objects (LoginPage, ProductsPage, CartPage, CheckoutPage)
   ui/fixtures/     # test.extend() — injects page objects as typed parameters
   ui/data/         # users.ts, products.ts
-  api/clients/     # DummyJsonClient — typed API wrapper
-  api/fixtures/    # request context setup
-  api/data/        # test payloads
+  api/fixtures/    # test.extend() — lazy authToken fixture
+  api/types/       # response interfaces (LoginResponse, Product, etc.)
+  api/data/        # endpoints, credentials, test payloads
 tests/
   ui/              # login, products, cart, checkout specs
-  api/             # auth, products, users specs
+  api/             # auth, products specs
 ```
